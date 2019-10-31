@@ -1096,12 +1096,11 @@ def get_time_array_per_episode(ElphyFile):
     return np.arange(len(ElphyFile.episodes[0].channels[0].get_data()))*ElphyFile.episodes[0].channels[0].dxu
 
 
-def realign_episode_data_over_time(ElphyFile, ichannel, subsampling=1):
+def realign_episode_data_over_time(ElphyFile, ichannel, subsampling=1e-3):
     """
     subsampling in ms
     """
-    isubsmpl = int(subsampling/ElphyFile.episodes[0].channels[0].dxu)
-    print(isubsmpl)
+    isubsmpl = int(subsampling/ElphyFile.episodes[0].channels[0].dxu*1e3) # because ms in Elphy
     linear_data = np.zeros(0, dtype=np.int16)
     for iep in range(len(ElphyFile.episodes)):
         linear_data = np.concatenate([linear_data, np.array(ElphyFile.episodes[iep].channels[ichannel].get_data(), dtype=np.int16)[::isubsmpl]])
@@ -1116,16 +1115,15 @@ if __name__ == "__main__":
         filename = sys.argv[-1]
         ef = ElphyFile(filename, read_data=False, read_spikes=False)
 
-        new_dt = 10 # ms
+        new_dt = 10e-3 # s
         subsmpl_data = realign_episode_data_over_time(ef, 5, subsampling=new_dt)
-        new_t = np.arange(len(subsmpl_data))*new_dt*1e-3 # in seconds
+        new_t = np.arange(len(subsmpl_data))*new_dt # in seconds
         
-        # t = get_time_array_per_episode(ef) # in
         import matplotlib.pylab as plt
-
         plt.plot(new_t, subsmpl_data)
         plt.show()
         
+        # t = get_time_array_per_episode(ef) # in
         # for ax, iepisode in zip(AX.flatten(), [0, 4, 6, 34]):
         #     ax.set_title('episode %i' % iepisode)
         #     for ichannel in [3,45, 23, 12]:
