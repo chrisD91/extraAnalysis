@@ -1,0 +1,49 @@
+#######################################################################
+# SpikeDetekt parameters
+#######################################################################
+
+experiment_name = 'test'
+
+data_1 = '4319_CXRIGHT_NBR1'
+
+
+prb_file = 'poly64.prb'
+
+traces = dict(
+    raw_data_files=[data_1 + '.dat'],
+    voltage_gain=10.,
+    sample_rate=30000,
+    n_channels=64,
+    dtype='int16',
+)
+
+spikedetekt = dict(
+    filter_low=500.,  # Low pass frequency (Hz)
+    filter_high_factor=0.6 * .5,# this is 3kHz =0.3
+    filter_butter_order=3,  # Order of Butterworth filter.
+
+    filter_lfp_low=0,  # LFP filter low-pass frequency
+    filter_lfp_high=300,  # LFP filter high-pass frequency
+
+    chunk_size_seconds=1,
+    chunk_overlap_seconds=.015,
+
+    n_excerpts=50,
+    excerpt_size_seconds=1,
+    threshold_strong_std_factor=4.75 ,#4.75,   #5,#4.5 BEST 4.75
+    threshold_weak_std_factor=2.5 ,    #2.5,      #,2.5,#2   BEST 2.5
+    detect_spikes='negative',
+
+    connected_component_join_size=1,
+
+    extract_s_before=16,
+    extract_s_after=32,
+
+    n_features_per_channel=3,  # Number of features per channel.
+    pca_n_waveforms_max=10000,
+)
+
+klustakwik2 = dict(
+    num_starting_clusters=250,
+    max_possible_clusters=1000,
+)
