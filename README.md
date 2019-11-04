@@ -5,6 +5,14 @@ extracellular physiological signal analysis
 
 We analyze the trial-to-trial correlation for the same stimulus of different electrophysiological signals.
 
+We first pre-processed the extracellular signals. We run (assuming we have want to analyze an Elphy datafile `4319_CXRIGHT_NBR2.DAT`):
+
+```
+python lfp_preprocessing.py 4319_CXRIGHT_NBR2/ 
+```
+
+This computes the `lfp`, `MUA` and `gamma_power` quantities (described below).
+
 ### Local Field Potential
 
 Obtained by:
@@ -15,7 +23,7 @@ Obtained by:
 
 Above figure obtained by running:
 ```
-python trial_view.py lfp
+python trial_view_raw.py 4319_CXRIGHT_NBR2/ lfp
 ```
 ### Multi-Unit Activity
 
@@ -29,7 +37,7 @@ Obtained by:
 
 Above figure obtained by running:
 ```
-python trial_view.py MUA
+python trial_view_raw.py 4319_CXRIGHT_NBR2/ MUA
 ```
 
 ### Gamma-band activity
@@ -44,5 +52,16 @@ Obtained by:
 
 Above figure obtained by running:
 ```
-python trial_view.py gamma_power
+python trial_view_raw.py 4319_CXRIGHT_NBR2/ gamma_power
+```
+
+### Spikes
+
+Obtained by spike-sorting (/!\ seemingly broken /!\)
+
+![spikes](figures/spikes.png)
+
+Above figure obtained by running:
+```
+python trial_view_spikes.py 4319_CXRIGHT_NBR2
 ```

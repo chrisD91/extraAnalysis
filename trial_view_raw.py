@@ -3,45 +3,17 @@ import numpy as np
 import hdf5
 import matplotlib.pylab as plt
 
-folder = sys.argv[1]
+folder = sys.argv[1] # sets the datafile (by point to a folder containing all the analysis)
 
-
-dt = 1./3e4
-result_merged = hdf5.load_dict_from_hdf5(folder+os.path.sep+folder+'.result-merged.hdf5')
 extra_signals = np.load(folder+os.path.sep+'preprocessed_extra.npz')
 
-
-def show_raster_plot(stim, # stimulus ID
-                     result=result_merged,
-                     stim_duration = 10.,
-                     pre_stim_duration = 2.,
-                     post_stim_duration = 2.,
-                     stim_periodicity = 25):
-
-    cycle_duration = (stim_duration+pre_stim_duration+post_stim_duration)
-    tmax = np.max(np.concatenate([result['spiketimes'][key] for key in result['spiketimes']])*dt)+cycle_duration # time of last spike + cycle duration for security
-    print("with a stimulus periodicity of %i, %i repetitions were found" % (stim_periodicity, tmax/cycle_duration/stim_periodicity))
-    for i, nrn in enumerate(result['spiketimes'].keys()): # loop over neurons
-        spiketimes = result['spiketimes'][nrn]*dt
-        start = stim*cycle_duration # time of first trial of that stimulus (of id: "stim")
-        while start<tmax:
-            cond = (spiketimes>start) & (spiketimes<start+cycle_duration)
-            plt.plot(spiketimes[cond], i+.05*np.random.randn(len(spiketimes[cond])), 'o', ms=2)
-            start += cycle_duration*stim_periodicity
-            print(start/60, tmax/60)
-    plt.show()
-
-
 def show_extra_plot(signal_key='MUA', # stimulus ID
-                    result=result_merged,
                     stim_duration = 10.,
                     pre_stim_duration = 2.,
                     post_stim_duration = 2.,
                     stim_periodicity = 25):
 
     cycle_duration = (stim_duration+pre_stim_duration+post_stim_duration)
-    tmax = np.max(np.concatenate([result['spiketimes'][key] for key in result['spiketimes']])*dt)+cycle_duration # time of last spike + cycle duration for security
-    print("with a stimulus periodicity of %i, %i repetitions were found" % (stim_periodicity, tmax/cycle_duration/stim_periodicity))
 
     # raw data responses
     fig_raw, AX = plt.subplots(25, 1, figsize=(15,14))
@@ -77,7 +49,6 @@ def show_extra_plot(signal_key='MUA', # stimulus ID
     plt.show()
 
     
-# show_raster_plot(sys.arg[-1])
-show_extra_plot(sys.arg[-1])
+show_extra_plot(sys.argv[-1])
 
 
