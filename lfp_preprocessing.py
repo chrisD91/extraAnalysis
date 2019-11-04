@@ -22,9 +22,9 @@ if __name__ == "__main__":
         filename = sys.argv[-1]
         ef = ElphyFile(filename, read_data=False, read_spikes=False)
 
-        new_dt = 2e-3
-        new_dt_for_mua = 1e-4
-        new_dt_for_gamma = 1e-3
+        new_dt = 5e-3
+        new_dt_for_mua = 1e-3
+        new_dt_for_gamma = 2.5e-3
 
         # let's do it once for the first channel
         Nchannel, ichannel = 1, 32
